@@ -16,7 +16,7 @@ namespace Currency
         Random rnd = new Random();
         int i, day;
         Player player = new Player();
-        double price;
+        double price, w = 0, u = 0.1, o = 0.1, tT = 0.01;
         List<double> pointsY = new List<double>();
         public Form1()
         {
@@ -32,7 +32,8 @@ namespace Currency
             chart1.Series[0].Points.AddXY(0, price);
             for (i = 1; i <= day; i++)
             {
-                price = price * (1 + k * (rnd.NextDouble() - 0.5));
+                w = w + Math.Sqrt(tT) * (rnd.NextDouble() % 1 - 0.5);
+                price = price * Math.Exp((u - (o * o) / 2) * tT + o * w);
                 pointsY.Add(price);
                 chart1.Series[0].Points.AddXY(i, price);
             } 
@@ -40,7 +41,8 @@ namespace Currency
         }
         private void timer_Tick(object sender, EventArgs e)
         {
-            price = price * (1 + k * (rnd.NextDouble() - 0.5));
+            w = w + Math.Sqrt(tT) * (rnd.NextDouble() % 1 - 0.5);
+            price = price * Math.Exp((u - (o * o) / 2) * tT + o * w);
             pointsY.Add(price);
             chart1.Series[0].Points.AddXY(i, price);
             dayCount.Text = ("Day: " + (i - day));
